@@ -1,0 +1,5 @@
+# ignore brainstorming pseucode
+/Pseudocode.txt
+
+# ignore output files from running tests
+Outputs/
