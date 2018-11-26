@@ -15,6 +15,8 @@
 #include <sstream>
 #include <string>
 #include <string.h>
+// #include <errno.h>
+// #include <sys/stat.h>
 using namespace std;
 
 const int max_size = 100000;  // assuming 100,000 words at most
@@ -40,14 +42,15 @@ void createFile(string progress, int rank);
 void printLikelyFile();
 
 /*
- * Description: Empties contents of the output folder if it exists.
+ * Description: Deletes old Output directory from previous runs and recreates new Output directory.
  *              If no such folder can be found (i.e. this program has never been run),
  *              system will simply indicate as such as continue.
  */
 void resetFolder()
 {
+  system("rm -r Output");     // remove old Output directory; if DNE, outputs to console and continues
+  system("mkdir -p Output");  // make new Output directory
   cout << "Emptying output folder..." << endl;
-  system("exec rm -r Output/*");  // bash call to empty folder
 }
 
 /*
