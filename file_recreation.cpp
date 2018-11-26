@@ -17,9 +17,10 @@
 #include <string.h>
 using namespace std;
 
-const int size = 95686; // 95686 of the 100,000 words in the dictionary do not contain non-English letters
-string words[size];     // consists of all the words in the dictionary
-int ranks[size];        // parallel to words[], stores respective word rankings
+const int max_size = 100000;  // 95686 of the 100,000 words in the dictionary do not contain non-English letters
+string words[max_size];       // consists of all the words in the dictionary
+int ranks[max_size];          // parallel to words[], stores respective word rankings
+int dictionary_size = 0;      // holds actual size of dictionary
 string compressed_string;
 int doc_count = 0;
 const char punctuation[] = {'.', '!', '?', ';'};
@@ -61,16 +62,18 @@ void load_dictionary(string filepath)
 {
   std::ifstream dictionary(filepath);
   string word;
-  int i = 0; // index of array
-  // int count = 0;
   bool isWord = true;
   while(std::getline(dictionary, word))
   {
-    word = word.substr(0, word.length() - 1); // eliminate invisible EOL char
-    if(word.at(0) != '#') // if line is not a comment
-    {
-      for(int x = 0; x < word.length(); x++)  // eliminate words with non-English letters
-      {
+    // some text editors automatically add a newline character to the end of a .txt document upon save
+    // this if statement deletes that newline character if it was included
+    if(isprint(word.at(word.length() - 1)) == 0)
+      word = word.substr(0, word.length() - 1);
+
+    if(word.at(0) != '#')
+    { // if line is not a comment
+      for(int x = 0; x < word.length(); x++)
+      { // eliminate words with non-English letters
         if(isprint(word.at(x)) == 0)
         {
           isWord = false;
@@ -81,12 +84,10 @@ void load_dictionary(string filepath)
       { // eliminate single-letter words that are not I, A, or a
         if(!(word.at(0) == 'I' || word.at(0) == 'A' || word.at(0) == 'a'))  isWord = false;
       }
-      if(isWord)  // only include valid words
-      {
-        // count++;
-        words[i] = word;        // store word
-        i++;                    // increment index/counter
-        ranks[i] = i/100 + 1;   // store word rank
+      if(isWord)
+      { // only include valid words
+        words[dictionary_size] = word;        // store word
+        ranks[dictionary_size] = ++dictionary_size/100 + 1;   // store word rank
       }
       isWord = true;  // reset isWord
     }
@@ -160,14 +161,17 @@ void load_input(string filepath)
 {
   std::ifstream compressed_file(filepath);
   std::getline(compressed_file, compressed_string);
-  compressed_string = compressed_string.substr(0, compressed_string.length() - 1);
-  // TODO: CHANGE TO WHITESPACE TRUNCATING FUNCTION
+
+  // some text editors automatically add a newline character to the end of a .txt document upon save
+  // this if statement deletes that newline character if it was included
+  if(isprint(compressed_string.at(compressed_string.length() - 1)) == 0)
+    compressed_string = compressed_string.substr(0, compressed_string.length() - 1);
 }
 
 int binary_search(string key)
 {
   // cout << "bin search start" << endl;
-  int l = 0, m, r = size - 1;
+  int l = 0, m, r = dictionary_size - 1;
   while(l <= r)
   {
     m = (l + r) / 2;
@@ -292,8 +296,8 @@ int main() //int argc, char* argv[])
 
   string dictionary_file_path = "dictionary.txt";
   load_dictionary(dictionary_file_path);
+  sort(0, dictionary_size - 1);
 
-  sort(0, size - 1);
   string input_file_path = "Examples/ex4.txt";
   load_input(input_file_path);
   alg(compressed_string, "", 0);
