@@ -16,22 +16,17 @@
 #include <string>
 #include <string.h>
 using namespace std;
-// using namespace System;
 
 const int size = 95686; // 95686 of the 100,000 words in the dictionary do not contain non-English letters
 string words[size];     // consists of all the words in the dictionary
 int ranks[size];        // parallel to words[], stores respective word rankings
 string compressed_string;
 int doc_count = 0;
-const char beginning_punctuation[] = {'('};                     // code = 2
-const char end_punctuation[] = {'?', '!', ';', ')', ',', ':'};  // code = 3
-const char word_punctuation[] = {'.'};                          // code = 4
-const char bypass[] = {'/', '-', '+', '=', '_', '@', '$'};      // code = 5
+const char punctuation[] = {'.', '!', '?', ';'};
 string most_likely_file = "";
 int most_likely_rank = INT_MAX;
-// isalnum()
 
-// void resetFolder();
+void resetFolder();
 void load_dictionary(string filepath);
 void merge(int l, int m, int r);
 void sort(int l, int r);
@@ -39,7 +34,7 @@ void load_input(string filepath);
 int binary_search(string key);
 int* dynamic_stuff(string sub_string);
 string alg(string line, string progress, int rank);
-int checkCharacter(char character);
+int isPunctuation(char character);
 void createFile(string progress, int rank);
 
 
@@ -50,14 +45,14 @@ void createFile(string progress, int rank);
  */
 // void resetFolder()
 // {
-//   String* directories[] = Directory::GetDirectories("", "Original Files");
+//   String* directories[] = Directory::GetDirectories("", "Output");
 //   bool exists = false;
 //   for(int i = 0; i < directories.length(); i++)
 //   {
-//     if(directories[i].compare("Original Files") == 0) exists = true;
+//     if(directories[i].compare("Output") == 0) exists = true;
 //   }
 //   if(exists)
-//     system("exec rm -r Original\\ Files/*");
+//     system("exec rm -r Output/*");
 //   else
 //
 // }
@@ -200,21 +195,16 @@ int* dynamic_stuff(string sub_string)
   if(sub_string.length() == 0)  return table;
   int index;
 
-  cout << "LINE LENGTH " << sub_string.length() << endl;
   string temp = "";
   for(int i = 0; i < sub_string.length(); i++)
   {
     temp.append(sub_string, i, 1);
     cout << "SEARCH: " << temp << endl;
     index = binary_search(temp);
-    if(index < 0)
-    {
-      table[i] = 0;
-    }
-    else
-    {
-      table[i] = 1;
-    }
+
+    // if found, indicate 1; otherwise, check and indicate whether it is proper punctuation
+    if(index >= 0)  table[i] = 1;
+    else            table[i] = isPunctuation(temp.at(temp.length() - 1));
   }
   return table;
 }
@@ -228,7 +218,6 @@ string alg(string line, string progress, int rank)
     return "";
   }
 
-  cout << "PROGRESS LENGTH " << progress.length() << endl;
   cout << line << " | " << progress << endl;
   int* table = dynamic_stuff(line);
   for(int i = 0; i < line.length(); i++)
@@ -239,49 +228,63 @@ string alg(string line, string progress, int rank)
 
   for(int i = 0; i < line.length(); i++)
   {
-    if(table[i] != 0)
+    int added_rank = 0;
+
+    if (table[i] == 1)
     {
-      int added_rank = ranks[binary_search(line.substr(0, i + 1))];
+      added_rank = ranks[binary_search(line.substr(0, i + 1))];
+      if(i < line.length() - 1 && table[i + 1] == 2)
+      { // if next character is a punctuation
+        i++;
+      }
+
       if(progress.length() != 0)
-      {
-        alg(line.substr(i + 1, line.length() - i), progress + " " + line.substr(0, i + 1), rank + added_rank);
+      { // if this isn't first step, include whitespace
+        alg(line.substr(i + 1, line.length() - i - 1), progress + " " + line.substr(0, i + 1), rank + added_rank);
       }
       else
       {
         alg(line.substr(i + 1, line.length() - i), line.substr(0, i + 1), added_rank);
       }
     }
+    else if (table[i] == 2)
+    { // end_punctuation
+      added_rank = ranks[binary_search(line.substr(0, i))];
+      if(progress.length() != 0)
+      {
+        if(i == 0)  // if punctuation is in front, add without appending white space first
+          alg(line.substr(i + 1, line.length() - i - 1), progress + line.substr(i, 1), rank + added_rank);
+        else
+          alg(line.substr(i + 1, line.length() - i - 1), progress + " " + line.substr(0, i) + line.substr(i, 1), rank + added_rank);
+      }
+      else
+      {
+        alg(line.substr(i + 1, line.length() - i - 1), line.substr(0, i) + line.substr(i, 1), added_rank);
+      }
+    }
   }
 }
 
-int checkCharacter(char character)
+int isPunctuation(char character)
 {
-  for(int i = 0; i < sizeof(beginning_punctuation); i++)
-    if(character == beginning_punctuation[i]) return 2;
-
-  for(int i = 0; i < sizeof(end_punctuation); i++)
-    if(character == end_punctuation[i]) return 3;
-
-  for(int i = 0; i < sizeof(word_punctuation); i++)
-    if(character == word_punctuation[i]) return 4;
-
-  for(int i = 0; i < sizeof(bypass); i++)
-    if(character == bypass[i]) return 5;
-
-  return 1;
+  for(int i = 0; i < sizeof(punctuation); i++)
+    if(character == punctuation[i]) return 2;
+  return 0;
 }
 
 void createFile(string answer, int rank)
 {
-  string name = "Original Files/file" + to_string(doc_count) + ".txt";
+  string name = "Output/file" + to_string(doc_count) + ".txt";
   string filename = "file" + to_string(doc_count) + ".txt";
   std::ofstream output(name);
   output << answer << endl;
   output.close();
 
+  cout << filename << " created!" << endl;
+
   // add new file to ranks file
   std::ofstream ranks;
-  ranks.open("Original Files/rankings.txt", std::ios::app);
+  ranks.open("Output/rankings.txt", std::ios::app);
   ranks << filename << ":\t" << rank << "\r\n" << endl;
   ranks << endl;
   ranks.close();
@@ -297,16 +300,15 @@ void createFile(string answer, int rank)
 int main() //int argc, char* argv[])
 {
   // resetFolder();
-  system("exec rm -r Original\\ Files/*");
+  system("exec rm -r Output/*");
 
   string dictionary_file_path = "dictionary.txt";
   load_dictionary(dictionary_file_path);
 
   sort(0, size - 1);
-  string input_file_path = "Examples/ex1.txt";
+  string input_file_path = "Examples/ex4.txt";
   load_input(input_file_path);
   alg(compressed_string, "", 0);
-
 
   cout << doc_count << " files created!" << endl;
 
