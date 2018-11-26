@@ -37,26 +37,18 @@ int* dynamic_stuff(string sub_string);
 string alg(string line, string progress, int rank);
 int isPunctuation(char character);
 void createFile(string progress, int rank);
-
+void printLikelyFile();
 
 /*
- * @description:  Resets the folder that will be used to hold the potential "original" documents.
- *                If the folder exists, simply empty its contents.
- *                If the folder does not exist, create the folder.
+ * @description:  Empties contents of the output folder if it exists.
+ *                If no such folder can be found (i.e. this program has never been run),
+ *                system will simply indicate as such as continue
  */
-// void resetFolder()
-// {
-//   String* directories[] = Directory::GetDirectories("", "Output");
-//   bool exists = false;
-//   for(int i = 0; i < directories.length(); i++)
-//   {
-//     if(directories[i].compare("Output") == 0) exists = true;
-//   }
-//   if(exists)
-//     system("exec rm -r Output/*");
-//   else
-//
-// }
+void resetFolder()
+{
+  cout << "Emptying output folder..." << endl;
+  system("exec rm -r Output/*");  // bash call to empty folder
+}
 
 void load_dictionary(string filepath)
 {
@@ -217,7 +209,7 @@ int* dynamic_stuff(string sub_string)
       break;
     }
   }
-  cout << "Scanned up to: " << temp << endl;
+  // cout << "Scanned up to: " << temp << endl;
   return table;
 }
 
@@ -230,7 +222,7 @@ string alg(string line, string progress, int rank)
     return "";
   }
 
-  cout << endl << line << " | " << progress << endl;
+  // cout << endl << line << " | " << progress << endl;
   int* table = dynamic_stuff(line);
 
   // print generated table; uncomment to read tables
@@ -289,10 +281,19 @@ void createFile(string answer, int rank)
   }
 }
 
+void printLikelyFile()
+{
+  if(doc_count > 0)
+  { // if any documents were created
+    cout << "Highest probability file is " << most_likely_file << " with rank " << most_likely_rank << endl;
+    cout << "More details in ranking.txt" << endl;
+  }
+  else  cout << "No possible original files were found!" << endl;
+}
+
 int main() //int argc, char* argv[])
 {
-  // resetFolder();
-  system("exec rm -r Output/*");
+  resetFolder();
 
   string dictionary_file_path = "dictionary.txt";
   load_dictionary(dictionary_file_path);
@@ -302,9 +303,6 @@ int main() //int argc, char* argv[])
   load_input(input_file_path);
   alg(compressed_string, "", 0);
 
-  cout << doc_count << " files created!" << endl;
-
   // Identify and print most likely file
-  cout << "Most likely file is " << most_likely_file << " with rank " << most_likely_rank << endl;
-  cout << "More details in ranking.txt" << endl;
+  printLikelyFile();
 }
