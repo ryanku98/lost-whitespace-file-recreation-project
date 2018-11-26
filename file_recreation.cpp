@@ -24,8 +24,8 @@ int dictionary_size = 0;      // holds actual size of dictionary
 string compressed_string;
 int doc_count = 0;
 const char punctuation[] = {'.', '!', '?', ';'};
-string most_likely_file = "";
-int most_likely_rank = INT_MAX;
+string most_likely_files[3];
+int most_likely_ranks[] = {INT_MAX, INT_MAX, INT_MAX};
 
 void resetFolder();
 void load_dictionary(string filepath);
@@ -320,11 +320,27 @@ void createFile(string answer, int rank)
   ranks << endl;
   ranks.close();
 
-  // store most likely file
-  if(rank < most_likely_rank)
-  {
-    most_likely_rank = rank;
-    most_likely_file = filename;
+  // store most likely files
+  if(rank < most_likely_ranks[0])
+  { // if lowest, shift top 2 down, store in top
+    most_likely_ranks[2] = most_likely_ranks[1];
+    most_likely_ranks[1] = most_likely_ranks[0];
+    most_likely_ranks[0] = rank;
+    most_likely_files[2] = most_likely_files[1];
+    most_likely_files[1] = most_likely_files[0];
+    most_likely_files[0] = filename;
+  }
+  else if(rank < most_likely_ranks[1])
+  { // if second lowest, shift 2nd down, store in middle
+    most_likely_ranks[2] = most_likely_ranks[1];
+    most_likely_ranks[1] = rank;
+    most_likely_files[2] = most_likely_files[1];
+    most_likely_files[1] = filename;
+  }
+  else if(rank < most_likely_ranks[2])
+  { // if third lowest, store in bottom
+    most_likely_ranks[2] = rank;
+    most_likely_files[2] = filename;
   }
 }
 
@@ -336,7 +352,9 @@ void printLikelyFile()
 {
   if(doc_count > 0)
   { // if any documents were created
-    cout << "Highest probability file is " << most_likely_file << " with rank " << most_likely_rank << endl;
+    cout << "1st highest probability file is " << most_likely_files[0] << " with rank " << most_likely_ranks[0] << endl;
+    cout << "2nd highest probability file is " << most_likely_files[1] << " with rank " << most_likely_ranks[1] << endl;
+    cout << "3rd highest probability file is " << most_likely_files[2] << " with rank " << most_likely_ranks[2] << endl;
     cout << "More details in ranking.txt" << endl;
   }
   else  cout << "No possible original files were found!" << endl;
