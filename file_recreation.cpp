@@ -17,7 +17,7 @@
 #include <string.h>
 using namespace std;
 
-const int max_size = 100000;  // 95686 of the 100,000 words in the dictionary do not contain non-English letters
+const int max_size = 100000;  // assuming 100,000 words at most
 string words[max_size];       // consists of all the words in the dictionary
 int ranks[max_size];          // parallel to words[], stores respective word rankings
 int dictionary_size = 0;      // holds actual size of dictionary
