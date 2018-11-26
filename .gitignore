@@ -1,5 +1,17 @@
+# ignore drafting and random sketches
+/Brainstorm.txt
+
 # ignore brainstorming pseudocode
 /Pseudocode.txt
 
+# ignore testing dictionary
+/fakedictionary.txt
+
 # ignore output files from running tests
-Outputs/
+Original\ Files/
+
+# ignore example input files
+Examples/
+
+# ignore compiled executable
+/file_recreation
