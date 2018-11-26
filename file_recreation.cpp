@@ -199,7 +199,7 @@ int* dynamic_stuff(string sub_string)
   for(int i = 0; i < sub_string.length(); i++)
   {
     temp.append(sub_string, i, 1);
-    cout << "SEARCH: " << temp << endl;
+
     index = binary_search(temp);
 
     // if found, indicate 1; otherwise, check and indicate whether it is proper punctuation
@@ -209,14 +209,11 @@ int* dynamic_stuff(string sub_string)
     if(table[i] == 2)
     { // once first punctuation is found, find all other punctuation and exit early (reduces # of useless searches)
       while(i < sub_string.length() - 1)
-      {
-        i++;
-        table[i] = isPunctuation(sub_string.at(i));
-      }
+        table[++i] = isPunctuation(sub_string.at(i));
       break;
     }
-
   }
+  cout << "Scanned up to: " << temp << endl;
   return table;
 }
 
@@ -229,12 +226,13 @@ string alg(string line, string progress, int rank)
     return "";
   }
 
-  cout << line << " | " << progress << endl;
+  cout << endl << line << " | " << progress << endl;
   int* table = dynamic_stuff(line);
 
-  for(int i = 0; i < line.length(); i++)
-    cout << table[i];
-  cout << endl;
+  // print generated table; uncomment to read tables
+  // for(int i = 0; i < line.length(); i++)
+  //   cout << table[i];
+  // cout << endl;
 
   for(int i = 0; i < line.length(); i++)
   {
@@ -243,19 +241,14 @@ string alg(string line, string progress, int rank)
     if (table[i] == 1)
     {
       added_rank = ranks[binary_search(line.substr(0, i + 1))];
-      if(i < line.length() - 1 && table[i + 1] == 2)
-      { // if next character is a punctuation
-        i++;
-      }
 
-      if(progress.length() != 0)
-      { // if this isn't first step, include whitespace
+      // if next character is a punctuation, include that in the progress
+      if(i < line.length() - 1 && table[i + 1] == 2)  i++;
+
+      if(progress.length() != 0)  // if this isn't first step, include whitespace
         alg(line.substr(i + 1, line.length() - i - 1), progress + " " + line.substr(0, i + 1), rank + added_rank);
-      }
       else
-      {
         alg(line.substr(i + 1, line.length() - i), line.substr(0, i + 1), added_rank);
-      }
     }
   }
 }
