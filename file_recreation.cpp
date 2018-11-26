@@ -5,6 +5,14 @@
  * Professor: Professor N. Shaghaghi
  */
 
+/*
+ * NOTE: for full running instructions, please see https://github.com/ryanku98/lost-whitespace-file-recreation-project/
+ * ... or just run the following and hope it works:
+ *
+ * g++ -o file_recreation file_recreation.cpp
+ * ./file_recreation dictionary.txt Examples/Ex1.txt
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
