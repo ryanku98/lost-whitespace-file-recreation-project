@@ -205,6 +205,17 @@ int* dynamic_stuff(string sub_string)
     // if found, indicate 1; otherwise, check and indicate whether it is proper punctuation
     if(index >= 0)  table[i] = 1;
     else            table[i] = isPunctuation(temp.at(temp.length() - 1));
+
+    if(table[i] == 2)
+    { // once first punctuation is found, find all other punctuation and exit early (reduces # of useless searches)
+      while(i < sub_string.length() - 1)
+      {
+        i++;
+        table[i] = isPunctuation(sub_string.at(i));
+      }
+      break;
+    }
+
   }
   return table;
 }
@@ -220,10 +231,9 @@ string alg(string line, string progress, int rank)
 
   cout << line << " | " << progress << endl;
   int* table = dynamic_stuff(line);
+
   for(int i = 0; i < line.length(); i++)
-  {
     cout << table[i];
-  }
   cout << endl;
 
   for(int i = 0; i < line.length(); i++)
@@ -245,21 +255,6 @@ string alg(string line, string progress, int rank)
       else
       {
         alg(line.substr(i + 1, line.length() - i), line.substr(0, i + 1), added_rank);
-      }
-    }
-    else if (table[i] == 2)
-    { // end_punctuation
-      added_rank = ranks[binary_search(line.substr(0, i))];
-      if(progress.length() != 0)
-      {
-        if(i == 0)  // if punctuation is in front, add without appending white space first
-          alg(line.substr(i + 1, line.length() - i - 1), progress + line.substr(i, 1), rank + added_rank);
-        else
-          alg(line.substr(i + 1, line.length() - i - 1), progress + " " + line.substr(0, i) + line.substr(i, 1), rank + added_rank);
-      }
-      else
-      {
-        alg(line.substr(i + 1, line.length() - i - 1), line.substr(0, i) + line.substr(i, 1), added_rank);
       }
     }
   }
