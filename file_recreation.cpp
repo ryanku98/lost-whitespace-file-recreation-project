@@ -23,23 +23,25 @@ string words[size];     // consists of all the words in the dictionary
 int ranks[size];        // parallel to words[], stores respective word rankings
 string compressed_string;
 int doc_count = 0;
-const string beginning_punctuation[] = {"("};
-const string end_punctuation[] = {"?", "!", ";", ")", ",", ":"};
-const string word_punctuation[] = {"."};
-const string bypass[] = {"/", "-", "+", "=", "_", "@", "$"};
+const char beginning_punctuation[] = {'('};                     // code = 2
+const char end_punctuation[] = {'?', '!', ';', ')', ',', ':'};  // code = 3
+const char word_punctuation[] = {'.'};                          // code = 4
+const char bypass[] = {'/', '-', '+', '=', '_', '@', '$'};      // code = 5
+string most_likely_file = "";
+int most_likely_rank = INT_MAX;
 // isalnum()
 
 // void resetFolder();
 void load_dictionary(string filepath);
-void createFile(string progress, int rank);
 void merge(int l, int m, int r);
 void sort(int l, int r);
 void load_input(string filepath);
 int binary_search(string key);
 int* dynamic_stuff(string sub_string);
 string alg(string line, string progress, int rank);
-string most_likely_file = "";
-int most_likely_rank = INT_MAX;
+int checkCharacter(char character);
+void createFile(string progress, int rank);
+
 
 /*
  * @description:  Resets the folder that will be used to hold the potential "original" documents.
@@ -173,11 +175,7 @@ int binary_search(string key)
   int l = 0, m, r = size - 1;
   while(l <= r)
   {
-    // cout << "l = " << l << endl << "r = " << r << endl;
-    // int m = l + (r - l) / 2;
     m = (l + r) / 2;
-    // if(key.compare(words[m]) == 0)
-    //   return m;
 
     // key comes before middle word
     if(key.compare(words[m]) < 0)
@@ -206,24 +204,17 @@ int* dynamic_stuff(string sub_string)
   string temp = "";
   for(int i = 0; i < sub_string.length(); i++)
   {
-    // cout << "sub_st: " << sub_string << endl;
-    // cout << "for start @ i = " << i << endl;
     temp.append(sub_string, i, 1);
-    // temp = sub_string.substr(0, i + 1);
     cout << "SEARCH: " << temp << endl;
     index = binary_search(temp);
-    // cout << "binary search complete" << endl;
     if(index < 0)
     {
-      // cout << "index = -1" << endl;
       table[i] = 0;
     }
     else
     {
-      // cout << "index = " << index << endl;
       table[i] = 1;
     }
-    // cout << "for end @ i = " << i << endl << endl;
   }
   return table;
 }
@@ -234,7 +225,6 @@ string alg(string line, string progress, int rank)
   { // base case
     doc_count++;
     createFile(progress, rank);
-    // cout << "file" << doc_count << " rank: " << rank << endl;
     return "";
   }
 
@@ -249,23 +239,36 @@ string alg(string line, string progress, int rank)
 
   for(int i = 0; i < line.length(); i++)
   {
-    // cout << i << endl;
     if(table[i] != 0)
     {
       int added_rank = ranks[binary_search(line.substr(0, i + 1))];
       if(progress.length() != 0)
       {
-        // cout << "flagtrue" << endl;
         alg(line.substr(i + 1, line.length() - i), progress + " " + line.substr(0, i + 1), rank + added_rank);
       }
       else
-      { // i = 2 --> quickbrownfoxjumpsoverthelazydog
-        // cout << "length is " << progress.length() << endl;
+      {
         alg(line.substr(i + 1, line.length() - i), line.substr(0, i + 1), added_rank);
-        // cout << "finish" << endl;
       }
     }
   }
+}
+
+int checkCharacter(char character)
+{
+  for(int i = 0; i < sizeof(beginning_punctuation); i++)
+    if(character == beginning_punctuation[i]) return 2;
+
+  for(int i = 0; i < sizeof(end_punctuation); i++)
+    if(character == end_punctuation[i]) return 3;
+
+  for(int i = 0; i < sizeof(word_punctuation); i++)
+    if(character == word_punctuation[i]) return 4;
+
+  for(int i = 0; i < sizeof(bypass); i++)
+    if(character == bypass[i]) return 5;
+
+  return 1;
 }
 
 void createFile(string answer, int rank)
@@ -304,7 +307,6 @@ int main() //int argc, char* argv[])
   load_input(input_file_path);
   alg(compressed_string, "", 0);
 
-  // cout << binary_search("quickbrownfoxjumpsoverth") << endl;
 
   cout << doc_count << " files created!" << endl;
 
