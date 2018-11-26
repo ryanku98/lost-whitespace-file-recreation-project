@@ -10,8 +10,5 @@
 # ignore output files from running tests
 Output/
 
-# ignore example input files
-Examples/
-
 # ignore compiled executable
 /file_recreation
