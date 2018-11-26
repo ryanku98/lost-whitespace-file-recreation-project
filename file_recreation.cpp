@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <limits.h>
 #include <ios>
 #include <iostream>
 #include <fstream>
@@ -37,6 +38,8 @@ void load_input(string filepath);
 int binary_search(string key);
 int* dynamic_stuff(string sub_string);
 string alg(string line, string progress, int rank);
+string most_likely_file = "";
+int most_likely_rank = INT_MAX;
 
 /*
  * @description:  Resets the folder that will be used to hold the potential "original" documents.
@@ -279,6 +282,13 @@ void createFile(string answer, int rank)
   ranks << filename << ":\t" << rank << "\r\n" << endl;
   ranks << endl;
   ranks.close();
+
+  // store most likely file
+  if(rank < most_likely_rank)
+  {
+    most_likely_rank = rank;
+    most_likely_file = filename;
+  }
 }
 
 int main() //int argc, char* argv[])
@@ -290,11 +300,15 @@ int main() //int argc, char* argv[])
   load_dictionary(dictionary_file_path);
 
   sort(0, size - 1);
-  string input_file_path = "Examples/ex2.txt";
+  string input_file_path = "Examples/ex1.txt";
   load_input(input_file_path);
   alg(compressed_string, "", 0);
 
   // cout << binary_search("quickbrownfoxjumpsoverth") << endl;
 
   cout << doc_count << " files created!" << endl;
+
+  // Identify and print most likely file
+  cout << "Most likely file is " << most_likely_file << " with rank " << most_likely_rank << endl;
+  cout << "More details in ranking.txt" << endl;
 }
