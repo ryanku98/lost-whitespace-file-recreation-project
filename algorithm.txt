@@ -6,3 +6,5 @@ The decision path of the example used is as follows:
 alg("because", "", 0) --> alg("cause", "be", rankof("be")) --> alg("", "be cause", rankof("be") + rankof("cause")) --> base case
 
                       --> alg("", "because", rankof("because")) --> base case
+
+Full project can be found on https://github.com/ryanku98/lost-whitespace-file-recreation-project
