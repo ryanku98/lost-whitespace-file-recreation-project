@@ -343,20 +343,34 @@ void printLikelyFile()
 }
 
 /*
- * Description: Executes the necessary functions to produce the desired output.
+ * Description: Executes the necessary functions to produce the desired output files.
+ * Assumptions: argv[1] contains the filepath for the dictionary.
+ *              argv[2] contains the filepath for the compressed .txt file.
  */
-int main() //int argc, char* argv[])
+int main(int argc, char* argv[])
 {
+  if(argc != 3)
+  { // check number of inputs
+    cout << "ERROR: Could not input files." << endl << "Exiting..." << endl;
+    exit(EXIT_FAILURE);
+  }
+  if(argv[1] == NULL)
+  { // check dictionary filepoth
+    cout << "ERROR: No dictionary .txt file filepath inputted." << endl << "Exiting..." << endl;
+    exit(EXIT_FAILURE);
+  } else load_dictionary(argv[1]);
+  if(argv[2] == NULL)
+  { // check input file path
+    cout << "ERROR: No input .txt file filepath inputted." << endl << "Exiting..." << endl;
+    exit(EXIT_FAILURE);
+  } else load_input(argv[2]);
+
   resetFolder();
-
-  string dictionary_file_path = "dictionary.txt";
-  load_dictionary(dictionary_file_path);
   sort(0, dictionary_size - 1);
-
-  string input_file_path = "Examples/ex4.txt";
-  load_input(input_file_path);
   alg(compressed_string, "", 0);
 
   // Identify and print most likely file
   printLikelyFile();
+
+  exit(EXIT_SUCCESS);
 }
