@@ -1,8 +1,8 @@
 /*
  * @author: ryanku98 --> https://github.com/ryanku98
  * @date: 26 November 2018
- * @class: COEN179 Theory of Algorithms
- * @professor: Professor N. Shaghaghi
+ * Class: COEN179 Theory of Algorithms
+ * Professor: Professor N. Shaghaghi
  */
 
 #include <stdio.h>
@@ -15,8 +15,6 @@
 #include <sstream>
 #include <string>
 #include <string.h>
-// #include <errno.h>
-// #include <sys/stat.h>
 using namespace std;
 
 const int max_size = 100000;  // assuming 100,000 words at most
