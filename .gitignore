@@ -8,7 +8,7 @@
 /fakedictionary.txt
 
 # ignore output files from running tests
-Original\ Files/
+Output/
 
 # ignore example input files
 Examples/
