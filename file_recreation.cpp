@@ -345,19 +345,24 @@ void createFile(string answer, int rank)
 }
 
 /*
- * Description: Prints to console the name of the file with the highest likelihood of being the original file.
+ * Description: Prints to console the name(s) of the file(s) with the highest likelihood(s) of being the original file.
  *              If no files were created, it will indicate as such.
  */
 void printLikelyFile()
 {
-  if(doc_count > 0)
-  { // if any documents were created
-    cout << "1st highest probability file is " << most_likely_files[0] << " with rank " << most_likely_ranks[0] << endl;
-    cout << "2nd highest probability file is " << most_likely_files[1] << " with rank " << most_likely_ranks[1] << endl;
-    cout << "3rd highest probability file is " << most_likely_files[2] << " with rank " << most_likely_ranks[2] << endl;
-    cout << "More details in ranking.txt" << endl;
+  if(doc_count > 0) cout << endl << "Top files of highest probability:" << endl;
+  else
+  {
+    cout << "No possible original files were found!" << endl;
+    return;
   }
-  else  cout << "No possible original files were found!" << endl;
+
+  for(int i = 0; i < sizeof(most_likely_ranks) / sizeof(most_likely_ranks[0]); i++)
+  {
+    if(most_likely_ranks[i] != INT_MAX)
+      cout << i + 1 << ": " << most_likely_files[i] << " with rank " << most_likely_ranks[i] << endl;
+  }
+  cout << "More details in Output/ranking.txt" << endl;
 }
 
 /*
