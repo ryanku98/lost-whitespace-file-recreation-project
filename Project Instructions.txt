@@ -2,6 +2,7 @@ After a file compression failure, all the white space among words in a text file
 
 What you have at your disposal:
 - List of unsorted top 100000 English words most used up until August 2005 which includes #comments showing you the popularity class of the word in the language (dictionary.txt).
+- List of unsorted top 20000 English words (and 20000 with the first letter capitalized for ease) (dictionary2.txt). Note that this library does not have the popularity classes comment so you may assume the popularity classes yourself. The capitalized versions of the words are in the second half of the document so for ease you need to think of them as in the same popularity class as the lower case ones above.
 
 Methodology:
 - Assume your input document will be in the form of a text file
