@@ -7,4 +7,15 @@ alg("because", "", 0) --> alg("cause", "be", rankof("be")) --> alg("", "be cause
 
                       --> alg("", "because", rankof("because")) --> base case
 
+To accomodate for sentence-separating punctuation, a code of 2 is added to the array whenever it is encountered. If a 1 in the array is encountered by alg(), it checks to see if the next value is a 2 (which would imply that this word is ended by punctuation). If this case is triggered, the word along with the punctuation is added to the new progress string continued as such.
+The decision path for an input file containing "th?wart!" is as follows:
+     0120000                   0111                                 00
+alg("th?wart", "", 0) --> alg("wart", "th?", rankof("th")) --> alg("rt", "th? wa", rankof("th") + rankof("wa")) --> dead end
+                                                                    0
+                                                           --> alg("t", "th? war", rankof("th") + rankof("war")) --> dead end
+
+                                                           --> alg("", "th? wart", rankof("th") + rankof("wart")) --> base case
+                                                           
+Note that when a table does not contain a 1, the algorithm registers this possible solution as a dead end and exists the current alg() call without creating a new file.
+
 Full project can be found on https://github.com/ryanku98/lost-whitespace-file-recreation-project
