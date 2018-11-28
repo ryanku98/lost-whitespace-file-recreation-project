@@ -2,7 +2,7 @@
 
 This is a C++ project created under the premise that we want to be able to identify all possible full sequences of words that exist in a whitespace-less sequence of characters: [Project Instructions.txt](https://github.com/ryanku98/lost-whitespace-file-recreation-project/blob/master/Project%20Instructions.txt)
 
-I am offering this code unlicensed (as it's simply just a project for a class cancelled last minute due to air quality issues), but if you do use any part of this code/concept, please do note the original source (a [link](https://github.com/ryanku98/lost-whitespace-file-recreation-project) to this page will suffice). Thanks!
+I am offering this code unlicensed (as it's simply just a project for a class cancelled last minute due to air quality issues), but if you do use any part of my code/concepts, please do note the original source in your file (a [link](https://github.com/ryanku98/lost-whitespace-file-recreation-project) to this page will suffice). Thanks!
 
 ## USE ##
 ### Requirements ###
