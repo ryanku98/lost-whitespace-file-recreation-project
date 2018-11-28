@@ -70,7 +70,6 @@ void load_dictionary2(string filepath)
   std::ifstream dictionary(filepath);
   string word;
   bool isWord = true;
-  // bool restart = false; // second half of dictionary2.txt contains the same words but capitalized, so they should receive the same ranking
   while(std::getline(dictionary, word))
   {
     // some text editors automatically add a newline character to the end of a .txt document upon save
@@ -96,8 +95,8 @@ void load_dictionary2(string filepath)
       }
       if(isWord)
       { // only include valid words
-        words[dictionary_size] = word;        // store word
-        ranks[dictionary_size] = ++dictionary_size/100 + 1;   // store word rank
+        words[dictionary_size++] = word;                      // store word
+        ranks[dictionary_size - 1] = dictionary_size/100 + 1; // store word rank
       }
       isWord = true;  // reset isWord
     }
