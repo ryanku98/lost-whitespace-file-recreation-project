@@ -97,6 +97,11 @@ void load_dictionary(string filepath)
       isWord = true;  // reset isWord
     }
   }
+  if(dictionary_size == 0)
+  { // handle empty dictionary .txt files
+    cout << "ERROR: No valid words found in the dictionary." << endl << "Exiting..." << endl;
+    exit(EXIT_FAILURE);
+  }
 }
 
 /*
