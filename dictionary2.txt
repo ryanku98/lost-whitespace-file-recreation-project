@@ -19671,6 +19671,7 @@ plummet
 sublunary
 typographical
 ussr
+# capitalized
 The
 Of
 And
