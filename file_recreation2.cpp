@@ -238,7 +238,6 @@ int* dynamic_stuff(string sub_string)
   for(int i = 0; i < sub_string.length(); i++)
   {
     temp.append(sub_string, i, 1);
-
     index = binary_search2(temp);
 
     // if found, indicate 1; otherwise, check and indicate whether it is proper punctuation
@@ -247,12 +246,11 @@ int* dynamic_stuff(string sub_string)
 
     if(table[i] == 2)
     { // once first punctuation is found, find all other punctuation and exit early (reduces # of useless searches)
-      while(i < sub_string.length() - 1)
-        table[++i] = isPunctuation(sub_string.at(i));
+      while(++i < sub_string.length())
+        table[i] = isPunctuation(sub_string.at(i));
       break;
     }
   }
-  // cout << "Scanned up to: " << temp << endl;
   return table;
 }
 
