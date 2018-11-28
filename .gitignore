@@ -7,8 +7,13 @@
 # ignore testing dictionary
 /fakedictionary.txt
 
+# ignore future changes to dictionaries
+/dictionary.txt
+/dictionary2.txt
+
 # ignore output files from running tests
 Output/
 
-# ignore compiled executable
+# ignore compiled executables
 /file_recreation
+/file_recreation2
