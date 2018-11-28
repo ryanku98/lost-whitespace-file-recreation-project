@@ -4,18 +4,28 @@ This is a C++ project created under the premise that we want to be able to ident
 
 ## USE ##
 ### Requirements ###
-Run in a unix shell like Bash or Terminal.
+Run in a UNIX shell like Bash or Terminal.
 
 
 ### Compile ###
+##### dictionary.txt #####
 ~~~
 g++ -o file_recreation file_recreation.cpp
+~~~
+##### dictionary2.txt #####
+~~~
+g++ -o file_recreation2 file_recreation2.cpp
 ~~~
 
 ### Run ###
 Second and third arguments should be the filepath to the dictionary .txt file and the filepath to a "compressed" input .txt file.
+##### dictionary.txt #####
 ~~~
 ./file_recreation dictionary.txt Examples/Ex1.txt
+~~~
+##### dictionary2.txt #####
+~~~
+./file_recreation2 dictionary2.txt Examples/Ex2.txt
 ~~~
 
 ### Author Notes ###
