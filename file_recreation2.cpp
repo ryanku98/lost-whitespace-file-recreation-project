@@ -164,7 +164,7 @@ void merge(int l, int m, int r)
  * @params l Left index used for mergesort.
  * @params r Right index used for mergesort.
  */
-void sort(int l, int r) // mergesort
+void sort(int l, int r)
 {
   if(l < r)
   {
@@ -199,20 +199,18 @@ int binary_search2(string key)
 {
   // cout << "bin search start" << endl;
   int l = 0, m, r = dictionary_size - 1;
+  key[0] = tolower(key[0]); // force lower case
+
   while(l <= r)
   {
     m = (l + r) / 2;
 
     // key comes before middle word
-    if(key.compare(words[m]) < 0)
-    {
-      r = m - 1;
-    } // key comes after middle word
-    else if(key.compare(words[m]) > 0)
-    {
-      l = m + 1;
-    } // key IS the middle word
-    else return m;
+    if(key.compare(words[m]) < 0)       r = m - 1;
+    // key comes after middle word
+    else if(key.compare(words[m]) > 0)  l = m + 1;
+    // key IS the middle word
+    else                                return m;
   }
   return -1;
 }
