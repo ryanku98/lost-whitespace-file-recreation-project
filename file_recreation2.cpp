@@ -188,6 +188,11 @@ void load_input(string filepath)
   std::ifstream compressed_file(filepath);
   std::getline(compressed_file, compressed_string);
 
+  if(compressed_string.length() == 0)
+  {
+    cout << "ERROR: No content in input file." << endl << "Exiting..." << endl;
+    exit(EXIT_FAILURE);
+  }
   // some text editors automatically add a newline character to the end of a .txt document upon save
   // this if statement deletes that newline character if it was included
   if(isprint(compressed_string.at(compressed_string.length() - 1)) == 0)
