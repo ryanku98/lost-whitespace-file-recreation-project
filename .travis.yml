@@ -4,6 +4,16 @@ compiler:
   - g++
   - clang++
 
+os: linux
+  addons:
+    apt:
+      sources:
+        - ubuntu-toolchain-r-test
+      packages:
+        - g++-7
+  env:
+    - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
+
 script:
   - g++ -o file_recreation2 file_recreation2.cpp
   - ./file_recreation2 dictionary2.txt Examples/ex1.txt
