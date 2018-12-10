@@ -1,17 +1,16 @@
-notifications:
-  email: false
+language: cpp
 
-language: c++
-
-sudo: false
-
-compiler: g++
-
-os:
-  - linux
-  - osx
+compiler:
+  - g++
+  - clang++
 
 script:
-  - qmake
-  - make
-  -
+  - g++ -o file_recreation2 file_recreation2.cpp
+  - ./file_recreation2 dictionary2.txt Examples/ex1.txt
+  - ./file_recreation2 dictionary2.txt Examples/ex2.txt
+  - ./file_recreation2 dictionary2.txt Examples/ex3.txt
+  - ./file_recreation2 dictionary2.txt Examples/ex4.txt
+  - ./file_recreation2 dictionary2.txt Examples/ex5.txt
+
+notifications:
+  email: false
