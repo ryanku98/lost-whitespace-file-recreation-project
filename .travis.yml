@@ -1,0 +1,17 @@
+notifications:
+  email: false
+
+language: c++
+
+sudo: false
+
+compiler: g++
+
+os:
+  - linux
+  - osx
+
+script:
+  - qmake
+  - make
+  -
