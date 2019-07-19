@@ -16,6 +16,6 @@ alg("th?wart", "", 0) --> alg("wart", "th?", rankof("th")) --> alg("rt", "th? wa
 
                                                            --> alg("", "th? wart", rankof("th") + rankof("wart")) --> base case
                                                            
-Note that when a table does not contain a 1, the algorithm registers this possible solution as a dead end and exists the current alg() call without creating a new file.
+Note that when a table does not contain a 1, the algorithm registers this possible solution as a dead end and exits the current alg() call without creating a new file.
 
 Full project can be found on https://github.com/ryanku98/lost-whitespace-file-recreation-project
