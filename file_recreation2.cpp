@@ -397,12 +397,12 @@ int main(int argc, char* argv[])
     exit(EXIT_FAILURE);
   }
   if(argv[1] == NULL)
-  { // check dictionary filepoth
+  { // check dictionary filepath
     cout << "ERROR: No dictionary .txt file filepath inputted." << endl << "Exiting..." << endl;
     exit(EXIT_FAILURE);
   } else load_dictionary2(argv[1]);
   if(argv[2] == NULL)
-  { // check input file path
+  { // check input filepath
     cout << "ERROR: No input .txt file filepath inputted." << endl << "Exiting..." << endl;
     exit(EXIT_FAILURE);
   } else load_input(argv[2]);
